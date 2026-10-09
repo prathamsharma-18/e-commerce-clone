@@ -7,6 +7,7 @@ const products = [
   {
     id: 1,
     name: "Wireless Over-Ear Headphones",
+    category: "electronics",
     price: 1999,
     originalPrice: 3999,
     discount: "50% off",
@@ -17,6 +18,7 @@ const products = [
   {
     id: 2,
     name: "Fitness Smartwatch v2",
+    category: "accessories",
     price: 2499,
     originalPrice: 4999,
     discount: "50% off",
@@ -27,6 +29,7 @@ const products = [
   {
     id: 3,
     name: "Pro Athletic Running Shoes",
+    category: "fashion",
     price: 1499,
     originalPrice: 2999,
     discount: "50% off",
@@ -37,19 +40,44 @@ const products = [
   {
     id: 4,
     name: "RGB Mechanical Keyboard",
+    category: "electronics",
     price: 3299,
     originalPrice: 5499,
     discount: "40% off",
     rating: "⭐⭐⭐⭐⭐",
     ratingScore: "4.7",
     image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&q=80"
+  },
+  {
+    id: 5,
+    name: "Classic Polarized Sunglasses",
+    category: "accessories",
+    price: 899,
+    originalPrice: 1999,
+    discount: "55% off",
+    rating: "⭐⭐⭐⭐☆",
+    ratingScore: "4.1",
+    image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&q=80"
+  },
+  {
+    id: 6,
+    name: "Cotton Casual Denim Jacket",
+    category: "fashion",
+    price: 2199,
+    originalPrice: 4399,
+    discount: "50% off",
+    rating: "⭐⭐⭐⭐⭐",
+    ratingScore: "4.6",
+    image: "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=400&q=80"
   }
 ];
 
-// 2. STATE: Our shopping cart starts empty
+// 2. STATE
 let cart = [];
+let currentCategory = "all";
+let searchQuery = "";
 
-// 3. SELECTING HTML ELEMENTS (connecting JS to the screen)
+// 3. SELECTING HTML ELEMENTS
 const cartBox = document.querySelector(".cart-box");
 const cartDrawer = document.getElementById("cartDrawer");
 const cartOverlay = document.getElementById("cartOverlay");
@@ -60,15 +88,37 @@ const cartItemsContainer = document.getElementById("cartItemsContainer");
 const cartTotalPrice = document.getElementById("cartTotalPrice");
 const checkoutBtn = document.getElementById("checkoutBtn");
 const productGrid = document.querySelector(".product-grid");
+const searchInput = document.querySelector(".search-input");
+const categoryButtons = document.querySelectorAll(".category-btn");
+const sectionTitle = document.getElementById("sectionTitle");
 
 // =========================================================
-// 4. FUNCTION: Render Product Cards on screen dynamically
+// 4. FUNCTION: Render Filtered Products on screen
 // =========================================================
 function renderProducts() {
-  productGrid.innerHTML = ""; // Clear existing static cards
+  productGrid.innerHTML = "";
 
-  products.forEach((product) => {
-    // Create card HTML for each item
+  // Filter based on both Category and Search Query!
+  const filteredProducts = products.filter((product) => {
+    const matchesCategory =
+      currentCategory === "all" || product.category === currentCategory;
+    const matchesSearch = product.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  if (filteredProducts.length === 0) {
+    productGrid.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #555;">
+        <h3>No products found matching "${searchQuery}"</h3>
+        <p style="margin-top: 8px;">Try searching for another term or click 'All Products' above.</p>
+      </div>
+    `;
+    return;
+  }
+
+  filteredProducts.forEach((product) => {
     const cardHTML = `
       <div class="product-card">
         <img src="${product.image}" alt="${product.name}" class="product-img">
@@ -89,7 +139,30 @@ function renderProducts() {
 }
 
 // =========================================================
-// 5. FUNCTION: Open and Close the Cart Drawer
+// 5. SEARCH & CATEGORY FILTERING
+// =========================================================
+
+// Listen as the user types into the search box
+searchInput.addEventListener("input", (e) => {
+  searchQuery = e.target.value.trim();
+  renderProducts();
+});
+
+// Listen for clicks on Category Pills
+categoryButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    // Update active button styling
+    categoryButtons.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    // Filter products
+    currentCategory = btn.getAttribute("data-category");
+    renderProducts();
+  });
+});
+
+// =========================================================
+// 6. OPEN & CLOSE CART DRAWER
 // =========================================================
 function openCart() {
   cartDrawer.classList.add("open");
@@ -101,92 +174,116 @@ function closeCart() {
   cartOverlay.classList.remove("active");
 }
 
-// Listen for clicks to open / close
 cartBox.addEventListener("click", openCart);
 closeCartBtn.addEventListener("click", closeCart);
 cartOverlay.addEventListener("click", closeCart);
 
 // =========================================================
-// 6. FUNCTION: Add an item to the Cart
+// 7. CART FUNCTIONALITY (Add, Quantity +/- , Remove)
 // =========================================================
+
+// Add to Cart
 function addToCart(productId) {
-  // Find product from list by its ID
-  const productToAdd = products.find((p) => p.id === productId);
+  const existingItem = cart.find((item) => item.id === productId);
 
-  if (productToAdd) {
-    // Add to our cart list
-    cart.push(productToAdd);
+  if (existingItem) {
+    // If product already in cart, just increase quantity
+    existingItem.quantity += 1;
+  } else {
+    // Add product with starting quantity of 1
+    const productToAdd = products.find((p) => p.id === productId);
+    if (productToAdd) {
+      cart.push({ ...productToAdd, quantity: 1 });
+    }
+  }
 
-    // Refresh UI
+  updateCartUI();
+  openCart();
+}
+
+// Increase Quantity (+)
+function increaseQuantity(productId) {
+  const item = cart.find((i) => i.id === productId);
+  if (item) {
+    item.quantity += 1;
     updateCartUI();
-
-    // Automatically slide drawer open so user sees their added item!
-    openCart();
   }
 }
 
-// =========================================================
-// 7. FUNCTION: Remove an item from the Cart
-// =========================================================
-function removeFromCart(index) {
-  // Remove 1 item at specified index
-  cart.splice(index, 1);
+// Decrease Quantity (-)
+function decreaseQuantity(productId) {
+  const item = cart.find((i) => i.id === productId);
+  if (item) {
+    if (item.quantity > 1) {
+      item.quantity -= 1;
+    } else {
+      // If quantity is 1 and user clicks minus, remove item from cart
+      cart = cart.filter((i) => i.id !== productId);
+    }
+    updateCartUI();
+  }
+}
+
+// Remove completely
+function removeFromCart(productId) {
+  cart = cart.filter((item) => item.id !== productId);
   updateCartUI();
 }
 
 // =========================================================
-// 8. FUNCTION: Update everything related to the Cart on screen
+// 8. UPDATE CART ON SCREEN
 // =========================================================
 function updateCartUI() {
-  // Update badge counter in Navbar and Drawer Header
-  cartCountNav.textContent = cart.length;
-  drawerCartCount.textContent = cart.length;
+  // Total quantity count (e.g. 2 headphones + 1 watch = 3 items)
+  const totalItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  cartCountNav.textContent = totalItemCount;
+  drawerCartCount.textContent = totalItemCount;
 
-  // If empty, show empty message
   if (cart.length === 0) {
     cartItemsContainer.innerHTML = '<p class="empty-cart-msg">Your cart is currently empty.</p>';
     cartTotalPrice.textContent = "₹0";
     return;
   }
 
-  // If items exist, render them inside the drawer
   cartItemsContainer.innerHTML = "";
   let total = 0;
 
-  cart.forEach((item, index) => {
-    total += item.price;
+  cart.forEach((item) => {
+    const itemSubtotal = item.price * item.quantity;
+    total += itemSubtotal;
 
     const itemHTML = `
       <div class="cart-item">
         <img src="${item.image}" alt="${item.name}" class="cart-item-img">
         <div class="cart-item-details">
           <div class="cart-item-title">${item.name}</div>
-          <div class="cart-item-price">₹${item.price.toLocaleString("en-IN")}</div>
-          <button class="cart-item-remove-btn" onclick="removeFromCart(${index})">Remove</button>
+          <div class="cart-item-price">₹${itemSubtotal.toLocaleString("en-IN")}</div>
+          <div class="cart-qty-controls">
+            <button class="qty-btn" onclick="decreaseQuantity(${item.id})">-</button>
+            <span class="qty-number">${item.quantity}</span>
+            <button class="qty-btn" onclick="increaseQuantity(${item.id})">+</button>
+            <button class="cart-item-remove-btn" onclick="removeFromCart(${item.id})">Delete</button>
+          </div>
         </div>
       </div>
     `;
     cartItemsContainer.innerHTML += itemHTML;
   });
 
-  // Update total price display
   cartTotalPrice.textContent = `₹${total.toLocaleString("en-IN")}`;
 }
 
-// =========================================================
-// 9. Checkout Button Demo Action
-// =========================================================
+// Checkout Button Demo
 checkoutBtn.addEventListener("click", () => {
   if (cart.length === 0) {
     alert("Your cart is empty! Add some products first.");
   } else {
-    alert(`Thank you for shopping with ShopZone! Total to pay: ${cartTotalPrice.textContent}`);
+    alert(`Thank you for shopping with ShopZone! Total: ${cartTotalPrice.textContent}`);
     cart = [];
     updateCartUI();
     closeCart();
   }
 });
 
-// Run once on page load to render products
+// Initial Render
 renderProducts();
-

@@ -146,10 +146,43 @@ body {
 }
 
 /* =========================================================
+   2.5 CATEGORIES BAR
+   ========================================================= */
+.categories-bar {
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+  flex-wrap: wrap;
+}
+
+.category-btn {
+  background-color: #ffffff;
+  border: 1px solid #d5d9d9;
+  border-radius: 20px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #0f1111;
+}
+
+.category-btn:hover {
+  background-color: #f7fafa;
+  border-color: #a2a6ac;
+}
+
+.category-btn.active {
+  background-color: #131921;
+  color: #ffffff;
+  border-color: #131921;
+}
+
+/* =========================================================
    3. PRODUCT GRID & CARDS
    ========================================================= */
 .products-section {
-  margin-top: 30px;
+  margin-top: 25px;
 }
 
 .section-title {
@@ -395,6 +428,40 @@ body {
 
 .cart-item-remove-btn:hover {
   color: #c45500;
+}
+
+/* Quantity controls (+ / - buttons) */
+.cart-qty-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.qty-btn {
+  background-color: #f0f2f2;
+  border: 1px solid #d5d9d9;
+  border-radius: 4px;
+  width: 26px;
+  height: 26px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.qty-btn:hover {
+  background-color: #e3e6e6;
+}
+
+.qty-number {
+  font-size: 13px;
+  font-weight: bold;
+  min-width: 16px;
+  text-align: center;
 }
 
 /* Drawer Footer */
