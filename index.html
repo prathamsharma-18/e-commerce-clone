@@ -1,0 +1,143 @@
+B<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ShopZone - Online Shopping</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar (Header) -->
+  <header class="navbar">
+    
+    <!-- 1. Brand Logo -->
+    <div class="logo">
+      <span class="logo-main">Shop</span><span class="logo-accent">Zone</span>
+    </div>
+
+    <!-- 2. Search Bar -->
+    <div class="search-container">
+      <input type="text" class="search-input" placeholder="Search for products, brands and more...">
+      <button class="search-btn">Search</button>
+    </div>
+
+    <!-- 3. Navigation Links (Account & Cart) -->
+    <nav class="nav-links">
+      <a href="#" class="nav-item">Sign In</a>
+      <a href="#" class="nav-item">Orders</a>
+      <div class="cart-box">
+        <span class="cart-icon">🛒</span>
+        <span class="cart-title">Cart</span>
+        <!-- This number will later be updated with JavaScript! -->
+        <span class="cart-count">0</span>
+      </div>
+    </nav>
+
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-content">
+    <section class="hero-banner">
+      <h2>Welcome to ShopZone!</h2>
+      <p>Huge discounts on the latest gadgets and fashion.</p>
+    </section>
+
+    <!-- Product Grid Section -->
+    <section class="products-section">
+      <h3 class="section-title">Featured Products</h3>
+
+      <div class="product-grid">
+
+        <!-- Card 1: Wireless Headphones -->
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80" alt="Wireless Headphones" class="product-img">
+          <div class="product-info">
+            <h4 class="product-name">Wireless Over-Ear Headphones</h4>
+            <div class="product-rating">⭐⭐⭐⭐☆ <span>(4.2)</span></div>
+            <div class="product-price">
+              <span class="currency">₹</span><span class="price-value">1,999</span>
+              <span class="original-price">₹3,999</span>
+              <span class="discount">(50% off)</span>
+            </div>
+            <button class="add-to-cart-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Card 2: Smart Watch -->
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80" alt="Smart Watch" class="product-img">
+          <div class="product-info">
+            <h4 class="product-name">Fitness Smartwatch v2</h4>
+            <div class="product-rating">⭐⭐⭐⭐⭐ <span>(4.8)</span></div>
+            <div class="product-price">
+              <span class="currency">₹</span><span class="price-value">2,499</span>
+              <span class="original-price">₹4,999</span>
+              <span class="discount">(50% off)</span>
+            </div>
+            <button class="add-to-cart-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Card 3: Running Shoes -->
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80" alt="Running Shoes" class="product-img">
+          <div class="product-info">
+            <h4 class="product-name">Pro Athletic Running Shoes</h4>
+            <div class="product-rating">⭐⭐⭐⭐☆ <span>(4.3)</span></div>
+            <div class="product-price">
+              <span class="currency">₹</span><span class="price-value">1,499</span>
+              <span class="original-price">₹2,999</span>
+              <span class="discount">(50% off)</span>
+            </div>
+            <button class="add-to-cart-btn">Add to Cart</button>
+          </div>
+        </div>
+
+        <!-- Card 4: Mechanical Keyboard -->
+        <div class="product-card">
+          <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&q=80" alt="Mechanical Keyboard" class="product-img">
+          <div class="product-info">
+            <h4 class="product-name">RGB Mechanical Keyboard</h4>
+            <div class="product-rating">⭐⭐⭐⭐⭐ <span>(4.7)</span></div>
+            <div class="product-price">
+              <span class="currency">₹</span><span class="price-value">3,299</span>
+              <span class="original-price">₹5,499</span>
+              <span class="discount">(40% off)</span>
+            </div>
+            <button class="add-to-cart-btn">Add to Cart</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Shopping Cart Sidebar Drawer (Hidden by default, opens when Cart is clicked) -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-header">
+      <h3>Your Shopping Cart (<span id="drawerCartCount">0</span>)</h3>
+      <button class="close-cart-btn" id="closeCartBtn">&times;</button>
+    </div>
+
+    <!-- Items will appear here dynamically via JavaScript -->
+    <div class="cart-items-container" id="cartItemsContainer">
+      <p class="empty-cart-msg" id="emptyCartMsg">Your cart is currently empty.</p>
+    </div>
+
+    <div class="cart-drawer-footer">
+      <div class="cart-total-row">
+        <span>Subtotal:</span>
+        <span class="total-price" id="cartTotalPrice">₹0</span>
+      </div>
+      <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+    </div>
+  </aside>
+
+  <!-- Link our JavaScript file -->
+  <script src="app.js"></script>
+</body>
+</html>
+
