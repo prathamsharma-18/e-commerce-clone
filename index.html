@@ -43,83 +43,51 @@ B<!DOCTYPE html>
       <p>Huge discounts on the latest gadgets and fashion.</p>
     </section>
 
-    <!-- Category Filter Bar -->
-    <section class="categories-bar">
-      <button class="category-btn active" data-category="all">All Products</button>
-      <button class="category-btn" data-category="electronics">Electronics</button>
-      <button class="category-btn" data-category="fashion">Fashion & Footwear</button>
-      <button class="category-btn" data-category="accessories">Accessories</button>
+    <!-- Category Filter & Sort Bar -->
+    <section class="controls-bar">
+      <div class="categories-bar">
+        <button class="category-btn active" data-category="all">All Products</button>
+        <button class="category-btn" data-category="electronics">Electronics</button>
+        <button class="category-btn" data-category="fashion">Fashion & Footwear</button>
+        <button class="category-btn" data-category="accessories">Accessories</button>
+      </div>
+
+      <!-- Price & Rating Sort Dropdown -->
+      <div class="sort-container">
+        <label for="sortSelect">Sort by:</label>
+        <select id="sortSelect" class="sort-select">
+          <option value="default">Featured</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="rating">Customer Rating</option>
+        </select>
+      </div>
     </section>
 
     <!-- Product Grid Section -->
     <section class="products-section">
-      <h3 class="section-title" id="sectionTitle">Featured Products</h3>
+      <div class="section-header">
+        <h3 class="section-title" id="sectionTitle">Featured Products</h3>
+        <span class="product-count-badge" id="productCountBadge">Showing 8 products</span>
+      </div>
 
       <div class="product-grid">
-
-        <!-- Card 1: Wireless Headphones -->
-        <div class="product-card">
-          <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80" alt="Wireless Headphones" class="product-img">
-          <div class="product-info">
-            <h4 class="product-name">Wireless Over-Ear Headphones</h4>
-            <div class="product-rating">⭐⭐⭐⭐☆ <span>(4.2)</span></div>
-            <div class="product-price">
-              <span class="currency">₹</span><span class="price-value">1,999</span>
-              <span class="original-price">₹3,999</span>
-              <span class="discount">(50% off)</span>
-            </div>
-            <button class="add-to-cart-btn">Add to Cart</button>
-          </div>
-        </div>
-
-        <!-- Card 2: Smart Watch -->
-        <div class="product-card">
-          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&q=80" alt="Smart Watch" class="product-img">
-          <div class="product-info">
-            <h4 class="product-name">Fitness Smartwatch v2</h4>
-            <div class="product-rating">⭐⭐⭐⭐⭐ <span>(4.8)</span></div>
-            <div class="product-price">
-              <span class="currency">₹</span><span class="price-value">2,499</span>
-              <span class="original-price">₹4,999</span>
-              <span class="discount">(50% off)</span>
-            </div>
-            <button class="add-to-cart-btn">Add to Cart</button>
-          </div>
-        </div>
-
-        <!-- Card 3: Running Shoes -->
-        <div class="product-card">
-          <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&q=80" alt="Running Shoes" class="product-img">
-          <div class="product-info">
-            <h4 class="product-name">Pro Athletic Running Shoes</h4>
-            <div class="product-rating">⭐⭐⭐⭐☆ <span>(4.3)</span></div>
-            <div class="product-price">
-              <span class="currency">₹</span><span class="price-value">1,499</span>
-              <span class="original-price">₹2,999</span>
-              <span class="discount">(50% off)</span>
-            </div>
-            <button class="add-to-cart-btn">Add to Cart</button>
-          </div>
-        </div>
-
-        <!-- Card 4: Mechanical Keyboard -->
-        <div class="product-card">
-          <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=400&q=80" alt="Mechanical Keyboard" class="product-img">
-          <div class="product-info">
-            <h4 class="product-name">RGB Mechanical Keyboard</h4>
-            <div class="product-rating">⭐⭐⭐⭐⭐ <span>(4.7)</span></div>
-            <div class="product-price">
-              <span class="currency">₹</span><span class="price-value">3,299</span>
-              <span class="original-price">₹5,499</span>
-              <span class="discount">(40% off)</span>
-            </div>
-            <button class="add-to-cart-btn">Add to Cart</button>
-          </div>
-        </div>
-
+        <!-- Rendered dynamically by app.js -->
       </div>
     </section>
   </main>
+
+  <!-- Product Quick View Modal -->
+  <div class="modal-overlay" id="productModalOverlay"></div>
+  <div class="product-modal" id="productModal">
+    <button class="close-modal-btn" id="closeModalBtn">&times;</button>
+    <div class="modal-content" id="modalProductDetails">
+      <!-- Populated dynamically via JS -->
+    </div>
+  </div>
+
+  <!-- Toast Notification Box (e.g., 'Item added to cart!') -->
+  <div class="toast-container" id="toastContainer"></div>
 
   <!-- Shopping Cart Sidebar Drawer (Hidden by default, opens when Cart is clicked) -->
   <div class="cart-overlay" id="cartOverlay"></div>
@@ -143,6 +111,45 @@ B<!DOCTYPE html>
       <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
     </div>
   </aside>
+
+  <!-- Complete E-commerce Footer -->
+  <footer class="footer">
+    <div class="footer-back-to-top" id="backToTopBtn">Back to top ↑</div>
+    
+    <div class="footer-main">
+      <div class="footer-column">
+        <h4>Get to Know Us</h4>
+        <a href="#">About ShopZone</a>
+        <a href="#">Careers</a>
+        <a href="#">Press Releases</a>
+        <a href="#">ShopZone Science</a>
+      </div>
+      <div class="footer-column">
+        <h4>Connect with Us</h4>
+        <a href="#">Facebook</a>
+        <a href="#">Twitter / X</a>
+        <a href="#">Instagram</a>
+      </div>
+      <div class="footer-column">
+        <h4>Make Money with Us</h4>
+        <a href="#">Sell on ShopZone</a>
+        <a href="#">Protect and Build Your Brand</a>
+        <a href="#">ShopZone Global Selling</a>
+        <a href="#">Supply to ShopZone</a>
+      </div>
+      <div class="footer-column">
+        <h4>Let Us Help You</h4>
+        <a href="#">Your Account</a>
+        <a href="#">Returns Centre</a>
+        <a href="#">100% Purchase Protection</a>
+        <a href="#">Help & Customer Care</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2026 ShopZone, Inc. or its affiliates. Designed for learning e-commerce development.</p>
+    </div>
+  </footer>
 
   <!-- Link our JavaScript file -->
   <script src="app.js"></script>
